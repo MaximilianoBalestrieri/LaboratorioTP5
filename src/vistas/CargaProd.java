@@ -23,20 +23,32 @@ public class CargaProd extends javax.swing.JFrame {
      */
     public CargaProd() {
         initComponents();
-        String[]titulo=new String[]{ "id", "nombres", "apellidos"};
+        String[]titulo=new String[]{ "Categoria", "Descripcion", "Precio"};
        tablaProducto.setColumnIdentifiers(titulo);
+       
         tablaProd.setModel(tablaProducto);
-    }
+       
+          }
 
          void agregar(){
-        tablaProducto.addRow(new Object[] {
+        
+           if ( cmbCategoria.getSelectedIndex()==-1 || txtDescripcion.getText().equals("") || txtprecio.getText().equals("") ) {
+                           JOptionPane.showMessageDialog(this, "No puede haber campos vacios", "Verificación", WIDTH);
+            cmbCategoria.requestFocus();
+           } else {
+                tablaProducto.addRow(new Object[] {
+            
         cmbCategoria.getSelectedItem(), txtDescripcion.getText(), txtprecio.getText()    });
-        cmbCategoria.setSelectedIndex(-1);
+         JOptionPane.showMessageDialog(this, "Se ha guardado el producto", "Atención", WIDTH);
+      //LImpia campos
+        cmbCategoria.setSelectedIndex(-1); 
         txtDescripcion.setText("");
         txtprecio.setText("");
         cmbCategoria.requestFocus();
 }        
-           
+           }
+       
+               
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -54,14 +66,25 @@ public class CargaProd extends javax.swing.JFrame {
         tablaProd = new javax.swing.JTable();
         lblTitulo = new javax.swing.JLabel();
         lblImagenProd = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         BtnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/aceptar.png"))); // NOI18N
         BtnAceptar.setText("Aceptar");
+        BtnAceptar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnAceptarMouseClicked(evt);
+            }
+        });
         BtnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnAceptarActionPerformed(evt);
+            }
+        });
+        BtnAceptar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnAceptarKeyPressed(evt);
             }
         });
 
@@ -73,7 +96,22 @@ public class CargaProd extends javax.swing.JFrame {
 
         cmbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alimentos", "Electronica", "Ropa" }));
         cmbCategoria.setSelectedIndex(-1);
+        cmbCategoria.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                cmbCategoriaFocusLost(evt);
+            }
+        });
+        cmbCategoria.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbCategoriaKeyPressed(evt);
+            }
+        });
 
+        txtDescripcion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtDescripcionFocusLost(evt);
+            }
+        });
         txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDescripcionActionPerformed(evt);
@@ -85,6 +123,16 @@ public class CargaProd extends javax.swing.JFrame {
             }
         });
 
+        txtprecio.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtprecioFocusLost(evt);
+            }
+        });
+        txtprecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtprecioActionPerformed(evt);
+            }
+        });
         txtprecio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtprecioKeyPressed(evt);
@@ -115,6 +163,14 @@ public class CargaProd extends javax.swing.JFrame {
 
         lblImagenProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/prod.png"))); // NOI18N
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/salir.png"))); // NOI18N
+        jButton1.setText("Salir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -140,8 +196,11 @@ public class CargaProd extends javax.swing.JFrame {
                             .addComponent(txtprecio))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BtnAceptar)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(BtnAceptar))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(81, Short.MAX_VALUE))))
         );
@@ -166,11 +225,16 @@ public class CargaProd extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtprecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrecio))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BtnAceptar)
-                .addGap(29, 29, 29))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addComponent(BtnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(76, 76, 76))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -218,6 +282,55 @@ public class CargaProd extends javax.swing.JFrame {
      }
     }//GEN-LAST:event_txtprecioKeyPressed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       System.exit(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cmbCategoriaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmbCategoriaFocusLost
+if (cmbCategoria.getItemCount()==0) {
+
+                    // Evitar que pierda el foco si está vacío
+                      JOptionPane.showMessageDialog(this, "Categoria No puede estar vacio", "Verificación", WIDTH);
+                    cmbCategoria.requestFocus();
+                }
+    }//GEN-LAST:event_cmbCategoriaFocusLost
+
+    private void txtDescripcionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDescripcionFocusLost
+//if (txtDescripcion.getText().equals("") ){
+//     JOptionPane.showMessageDialog(this, "Descripción no puede estar vacio", "Verificación", WIDTH);
+//     txtDescripcion.requestFocus();
+//     
+//}            // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescripcionFocusLost
+
+    private void txtprecioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtprecioFocusLost
+//if (txtprecio.getText().equals("") ){
+//     JOptionPane.showMessageDialog(this, "Precio no puede estar vacio", "Verificación", WIDTH);
+//     txtprecio.requestFocus();
+     
+//}               // TODO add your handling code here:
+    }//GEN-LAST:event_txtprecioFocusLost
+
+    private void BtnAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnAceptarMouseClicked
+agregar();        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnAceptarMouseClicked
+
+    private void cmbCategoriaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbCategoriaKeyPressed
+  if(evt.getExtendedKeyCode()==KeyEvent.VK_ENTER){
+         txtDescripcion.requestFocus();
+     }        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbCategoriaKeyPressed
+
+    private void BtnAceptarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAceptarKeyPressed
+         if(evt.getExtendedKeyCode()==KeyEvent.VK_ENTER){
+         agregar();
+     }       
+    }//GEN-LAST:event_BtnAceptarKeyPressed
+
+    private void txtprecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprecioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtprecioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -258,6 +371,7 @@ public class CargaProd extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAceptar;
     private javax.swing.JComboBox<String> cmbCategoria;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCategoria;
